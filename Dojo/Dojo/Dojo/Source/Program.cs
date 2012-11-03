@@ -1,5 +1,5 @@
 using System;
-using Dojo.Source.States;
+//using Dojo.Source.States;
 
 namespace Dojo.Source
 {
@@ -8,17 +8,30 @@ namespace Dojo.Source
     {
         // Properties
         static int state = 0;
-
+        //Game game = new Game();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         static void Main(string[] args)
         {
-            switch (state)
+            using (Game game = new Game())
             {
-                case States.SPLASH:
-                    break;
+              game.Run();
             }
+            
+            //switch (state)
+            //{
+            //    //case States.SPLASH:
+            //    //    break;
+            //    //case States.MAIN_MENU:
+            //    //    break;               
+            //    //case States.GAME:
+            //    // //
+            //    //    break;
+            //    //case States.STATS:
+            //    //    break;
+
+            //}
         }
     }
 #endif

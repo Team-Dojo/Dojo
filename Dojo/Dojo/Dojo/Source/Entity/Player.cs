@@ -17,15 +17,17 @@ namespace Dojo.Source.Entity
         public int group { get; private set; }
         private GamePadState controller;
 
-        public Player(PlayerIndex _ID, int _group, int _orientation, ContentManager content)
+        public Player(PlayerIndex _ID, int _group, int _orientation, ContentManager content, int X, int Y)
             : base(true, _orientation)
         {
             ID = _ID;
             group = _group;
-            acceleration.X = 2;
-            acceleration.Y = 2;
+            acceleration.X = 4;
+            acceleration.Y = 4;
             texture = content.Load<Texture2D>("PlayerTexture");
             spriteSheet = new SpriteSheet(texture, 40, 50);
+            position.X = X;
+            position.Y = Y;
         }
 
         private void ProcessInput()

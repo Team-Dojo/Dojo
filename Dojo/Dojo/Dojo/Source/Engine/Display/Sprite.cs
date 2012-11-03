@@ -19,15 +19,34 @@ namespace Dojo.Source.Engine.Display
         public Vector2 position = new Vector2(0, 0); // Holds x/y values.
         public Texture2D texture = null;
 
-        public Sprite()
+        public int orientation { get; private set; }
+        public enum Orientation
         {
+            LEFT = 0, 
+            RIGHT = 1, 
+            UP = 2, 
+            DOWN = 3,
+            NONE
+        }
+
+        public Sprite(int _orientation)
+        {
+            orientation = _orientation;
         }
 
         public void Draw()
         {
             if (visible)
             {
-                Game.spriteBatch.Draw(texture, position, Color.White);
+                if(orientation == (int)Orientation.RIGHT)
+                { Game.spriteBatch.Draw(texture, position, Color.White); }
+
+                Rectangle? srcRect = new Rectangle(0, 0, width, height);
+                Rectangle dstRect = new Rectangle(0, 0, width, height);
+                Vector2 vec = new Vector2(1,1);
+
+                if (orientation == (int)Orientation.LEFT)
+                { Game.spriteBatch.Draw(texture, position, null, Color.White, 0.0f, Vector2.Zero, vec, SpriteEffects.FlipHorizontally, 0); }
             }
         }
 
