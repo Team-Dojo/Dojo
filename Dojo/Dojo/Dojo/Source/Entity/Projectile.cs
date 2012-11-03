@@ -27,7 +27,7 @@ namespace Dojo.Source.Entity
         {
             if (active)
             {
-                if (orientation == LEFT)
+                if (orientation == (int) Orientation.LEFT)
                 {
                     speed.X *= -1;
                 }

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dojo.Source.Source
+namespace Dojo.Source
 {
     static class States
     {
-        static const int SPLASH = 0;
-        static const int MAIN_MENU = 1;
-        static const int CHARACTER_SELECT = 2;
-        static const int GAME = 3;
-        static const int STATS = 4;
+        public const int SPLASH = 0;
+        public const int MAIN_MENU = 1;
+        public const int GAME = 2;
+        public const int STATS = 3;
     }
 }
