@@ -25,14 +25,15 @@ namespace Dojo.Source.Entity
         private int fireRate;
         private bool isFiring;
 
-        public Player(PlayerIndex _ID, int _group, int _orientation, ContentManager content)
+        public Player(PlayerIndex _ID, int _group, int _orientation, ContentManager content, int X, int Y)
             : base(true, _orientation)
         {
             ID = _ID;
             group = _group;
+
             contentMan = content;
-            acceleration.X = 2;
-            acceleration.Y = 2;
+            acceleration.X = 4;
+            acceleration.Y = 4;
             texture = content.Load<Texture2D>("PlayerTexture");
             spriteSheet = new SpriteSheet(texture, 40, 50);
             stamina = 100;
@@ -40,8 +41,8 @@ namespace Dojo.Source.Entity
             timer = 0;
             fireRate = 30;
             isFiring = true;
-            
-           
+            position.X = X;
+            position.Y = Y;
         }
 
         private void ProcessInput()

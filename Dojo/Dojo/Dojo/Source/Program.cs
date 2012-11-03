@@ -8,7 +8,7 @@ namespace Dojo.Source
     {
         // Properties
         static int state = 0;
-
+        //Game game = new Game();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,8 +16,22 @@ namespace Dojo.Source
         {
             using (Game game = new Game())
             {
-                game.Run();
+				game.Run();
             }
+            
+            //switch (state)
+            //{
+            //    //case States.SPLASH:
+            //    //    break;
+            //    //case States.MAIN_MENU:
+            //    //    break;               
+            //    //case States.GAME:
+            //    // //
+            //    //    break;
+            //    //case States.STATS:
+            //    //    break;
+
+            //}
         }
     }
 #endif
