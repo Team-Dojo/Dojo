@@ -104,6 +104,7 @@ namespace Dojo.Source
 
             spriteBatch.Begin();
             player.Draw();
+            player.DrawProj();
             spriteBatch.End();
 
             base.Draw(gameTime);
