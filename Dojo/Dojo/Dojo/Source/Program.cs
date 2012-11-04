@@ -1,5 +1,5 @@
 using System;
-//using Dojo.Source.States;
+using Microsoft.Xna.Framework;
 
 namespace Dojo.Source
 {
@@ -7,33 +7,18 @@ namespace Dojo.Source
     static class Program
     {
         // Properties
-        static int state = 0;
-        //Game game = new Game();
+        public static Vector2 baseScreenSize = new Vector2(1280, 720); // Important game elements have to be rendered in 80% - 90% of the fullscreen size.
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game game = new Game())
+            using (GameManager gameManager = new GameManager())
             {
-				game.Run();
+                gameManager.Run();
             }
-            
-            //switch (state)
-            //{
-            //    //case States.SPLASH:
-            //    //    break;
-            //    //case States.MAIN_MENU:
-            //    //    break;               
-            //    //case States.GAME:
-            //    // //
-            //    //    break;
-            //    //case States.STATS:
-            //    //    break;
-
-            //}
         }
     }
 #endif
 }
-
