@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dojo.Source.Engine.Entity;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Dojo.Source.Framework.Entity;
 
 namespace Dojo.Source.Entity
 {
@@ -18,28 +16,18 @@ namespace Dojo.Source.Entity
 
         public int damage { get; private set; }
 
-        public Projectile(int _grouping, int _orientation, float _x, float _y,  ContentManager content)
+        public Projectile(int _grouping, int _orientation)
             : base(true, _orientation)
         {
             grouping = _grouping;
             speed.X = 10;
-            range = 500;
-            position.X = _x;
-            position.Y = _y;
-            texture = content.Load<Texture2D>("Projectile");
-
-        }
-
-        public bool isActive()
-        {
-            return active;
         }
 
         public void Update()
         {
             if (active)
             {
-                if (orientation == (int) Orientation.LEFT)
+                if (orientation == LEFT)
                 {
                     speed.X *= -1;
                 }
@@ -48,11 +36,10 @@ namespace Dojo.Source.Entity
                 {
                     position.X += speed.X;
                     distanceTravelled += (int)speed.X;
-                    
                 }
                 else
                 {
-                    active = false;
+                    // Destroy.
                 }
             }
         }
