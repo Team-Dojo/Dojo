@@ -4,21 +4,20 @@
 PROGRAMMERS:
 Andrew 'Andy' Allan
 Greig Barker
-Duncan Gillespie
-Vimarsh 'Vimme' Raina
 Mark Thompson
 
 ARTISTS:
-Ellen Brown
 Carl Packer
 Faye Williams
-
-PRODUCER:
-Matt Ross
 
 AUDIO:
 Brett Murray
 
+SPECIAL THANKS:
+Duncan Gillespie
+Vimarsh 'Vimme' Raina
+Ellen Brown
+Matt Ross
 
 //--------------------------------------
 // Legal

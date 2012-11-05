@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Dojo.Source.Framework.Display;
 
-namespace Dojo.Source.Framework.Entity
+namespace Dojo.Source.Framework.Display
 {
     /// <summary>
     /// Base class for objects which can move.

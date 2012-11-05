@@ -15,25 +15,27 @@ namespace Dojo.Source.Framework.Display
     {
         public int height { get; protected set; }
         public int width { get; protected set; }
+        public Texture2D texture { get; protected set; }
+        public int orientation { get; private set; } // Determines which way the sprite is facing
+
         public float rotation = 0.0f;
         public Vector2 scale = new Vector2(1, 1);
         public bool visible = true; // Determines if the object should be drawn to the display
         public Vector2 position = new Vector2(0, 0); // Holds top left x/y values of the sprite
-        public Texture2D texture = null;
         public SpriteEffects effects = SpriteEffects.None;
         public float layer = 0.0f;
-
-        public int orientation { get; private set; } // Determines which way the sprite is facing
+        public Rectangle sourceRect;
         public enum Orientation { LEFT, RIGHT, UP, DOWN, NONE }
 
         public Sprite(int _orientation)
         {
+            texture = null;
             orientation = _orientation;
         }
 
-        public void SetTexture(string _texture)
+        public void SetTexture(string _relativeTexturePath)
         {
-            texture = GameManager.contentManager.Load<Texture2D>(_texture);
+            texture = GameManager.contentManager.Load<Texture2D>(_relativeTexturePath);
             height = texture.Bounds.Height;
             width = texture.Bounds.Width;
         }

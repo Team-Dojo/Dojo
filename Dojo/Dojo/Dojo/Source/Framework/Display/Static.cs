@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Dojo.Source.Framework.Display;
 
-namespace Dojo.Source.Framework.Entity
+namespace Dojo.Source.Framework.Display
 {
     /// <summary>
     /// Base class for game objects that are static (do not move).
@@ -20,7 +20,7 @@ namespace Dojo.Source.Framework.Entity
         public Static(bool _collidable, int _orientation) 
             : base(_orientation)
         {
-            collidable = _collidable;            
+            collidable = _collidable;
         }
     }
 }

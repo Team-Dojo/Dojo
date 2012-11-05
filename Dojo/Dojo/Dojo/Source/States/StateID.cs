@@ -11,7 +11,9 @@ namespace Dojo.Source
     static class StateID
     {
         public const int SPLASH = 0;
-        public const int PLAY = 2;
-        public const int STATS = 3;
+        public const int MAIN_MENU = 1;
+        public const int CHARACTER_SELECT = 2;
+        public const int PLAY = 3;
+        public const int STATS = 4;
     }
 }

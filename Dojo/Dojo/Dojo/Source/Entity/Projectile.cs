@@ -2,38 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dojo.Source.Framework.Entity;
+using Dojo.Source.Framework.Display;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Dojo.Source.States;
 
 namespace Dojo.Source.Entity
 {
     class Projectile : Dynamic
     {
-        private int team;
+        public int team;
         private bool active = true;
         private int range;
         private int distanceTravelled;
-        private int bounces;
+        //private int bounces;
 
-        public int damage { get; private set; }
+        public float damage { get; private set; }
 
-        public Projectile(int _team, int _orientation, float _x, float _y,  ContentManager content)
+        public Projectile(int _team, int _orientation, float _x, float _y,  ContentManager content, float _damage)
             : base(true, _orientation)
         {
+            damage = _damage;
             team = _team;
             speed.X = 10;
-            range = 500;
+            range = 300;
             position.X = _x;
             position.Y = _y;
-            texture = content.Load<Texture2D>("Projectile");
+            SetTexture("Assets/RedBar");            
             if (orientation == (int)Orientation.LEFT)
             {
                 speed.X *= -1;
             }
         }
 
-        public bool isActive()
+        public void SetActive(bool state)
+        {
+            active = state;
+        }
+
+        public bool IsActive()
         {
             return active;
         }
@@ -42,6 +49,7 @@ namespace Dojo.Source.Entity
         {
             if (active)
             {
+                rotation += 2f;
                 if (distanceTravelled < range)
                 {
                     position.X += speed.X;

@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Dojo.Source.Entity;
-using Dojo.Source.Framework.Entity;
 using Dojo.Source.Framework.Display;
 using Dojo.Source.States;
+using Dojo.Source.Resources;
 
 namespace Dojo.Source
 {
@@ -40,24 +40,28 @@ namespace Dojo.Source
 
         protected override void Initialize()
         {
-            // Configure display.
+            // Configure display
             graphics.PreferredBackBufferWidth = (int)Program.baseScreenSize.X;
             graphics.PreferredBackBufferHeight = (int)Program.baseScreenSize.Y;
-            graphics.IsFullScreen = false; // Use false for debug and true for release.
+            graphics.IsFullScreen = false; // Use false for debug and true for release
             graphics.ApplyChanges();
 
-            // Initialise states.
+            // Initialise states
             play.Init();
+            splash.Init();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            // Create a new SpriteBatch, which can be used to draw textures
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load state content.
+            // Load fonts
+            Formats.Init();
+
+            // Load state content
             splash.Load();
             play.Load();
         }
@@ -69,7 +73,7 @@ namespace Dojo.Source
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit.
+            // Allows the game to exit
             if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) ||
                 (Keyboard.GetState().IsKeyDown(Keys.Escape)))
             {
@@ -86,7 +90,7 @@ namespace Dojo.Source
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-                currentState.Draw();
+            currentState.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -94,13 +98,13 @@ namespace Dojo.Source
 
         public static void SwitchState(int newState)
         {
-            // If the new ID is not the current ID then update the value
+            // If the new ID is not the current ID, then update the value
             if (newState != currentStateID)
             {
                 currentStateID = newState;
             }
 
-            // Change current state based on the new ID
+            // Change current state based on the ID
             switch (currentStateID)
             {
                 case StateID.SPLASH:
