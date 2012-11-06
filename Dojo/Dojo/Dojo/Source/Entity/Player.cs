@@ -87,27 +87,49 @@ namespace Dojo.Source.Entity
         private void HandleCollision()
         {
             List<Sprite> collisionArray = Play.collisionArray;
-            for (int i = 0; i < Play.collisionArray.Count; i++)
+            for (int i = 0; i < collisionArray.Count; i++)
             {
-                if (Play.collisionArray[i] is Projectile)
+                if (collisionArray[i] is Projectile)
                 {
-                    //
+                    if (collisionArray.ElementAt(i) is Projectile)
+                    {
+                        Projectile proj = (Projectile)collisionArray.ElementAt(i);
+                        if (proj.IsActive())
+                        {
+                            proj.Update();
+
+                            if (this.HitTestObject(proj))
+                            {
+                                if (proj.team != this.team)
+                                {
+                                    stamina -= proj.damage;
+                                    proj.SetActive(false);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            collisionArray.RemoveAt(i);
+                            i--;
+                        }
+                    }
                 }
 
-                if (Play.collisionArray[i] is Collectables)
+                if (collisionArray[i] is Pickup)
                 {
-                    Collectables collect = (Collectables)Play.collisionArray[i];
-                    if(this.HitTestObject(collect))
+                    Pickup collect = (Pickup)collisionArray[i];
+                    if (this.HitTestObject(collect))
                     {
                         if (collect.active)
                         {
                             collect.Activate(this);
-                            Play.collisionArray.RemoveAt(i);
+                            collisionArray.RemoveAt(i);
                         }
                     }
                 }
             }
         }
+        
 
         private void Fire()
         {
@@ -132,7 +154,7 @@ namespace Dojo.Source.Entity
 
         public bool IsAlive()
         {
-            if (stamina < 0)
+            if (stamina <= 0)
             {
                 return false;
             }
@@ -152,60 +174,28 @@ namespace Dojo.Source.Entity
 
         public void Update()
         {
-            HandleCollision();
+            controller = GamePad.GetState(ID);
 
-            percentStamina = (stamina / maxStamina);
+            HandleCollision();
+            ProcessInput();
+            UpdatePosition();
+            Fire();
 
             if (IsAlive())
             {
                 stamina += 0.05f;
-                if (stamina >= 100)
-                {
-                    stamina = 100;
-                }
+                
             }
 
-            controller = GamePad.GetState(ID);
+            percentStamina = (stamina / maxStamina);
 
-            if (controller.IsConnected)
+            if (stamina >= 100)
             {
-                ProcessInput();
-                UpdatePosition();
-                Fire();
-
-                for (int i = 0; i < Play.collisionArray.Count; i++)
-                {
-                    int or = 0;
-                    if (Play.collisionArray.ElementAt(i) is Projectile)
-                    {
-                        or++;
-                        Projectile proj = (Projectile)Play.collisionArray.ElementAt(i);
-                        if (proj.IsActive())
-                        {
-                            proj.Update();
-
-                            if (this.HitTestObject(proj))
-                            {
-                                if (proj.team != this.team)
-                                {
-                                    stamina-=proj.damage;
-                                    proj.SetActive(false);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Play.collisionArray.RemoveAt(i);
-                        }
-                    }
-
-                    System.Console.WriteLine(or);
-                }
+                stamina = 100;
             }
-            else
+            if (stamina < 0)
             {
-                // Handle controller not connected.
-                System.Console.WriteLine("Player " + ID + " controller not connected - please reconnect.");
+                stamina = 0;
             }
         }
     }

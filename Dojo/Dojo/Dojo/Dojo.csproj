@@ -107,7 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Entity\Collectables.cs" />
+    <Compile Include="Source\Entity\Pickup.cs" />
     <Compile Include="Source\Entity\Court.cs" />
     <Compile Include="Source\Entity\Pickups\Damage.cs" />
     <Compile Include="Source\Resources\PickUps.cs" />

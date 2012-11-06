@@ -5,11 +5,8 @@ using System.Text;
 
 namespace Dojo.Source.Entity.Pickups
 {
-    class Damage:Collectables
+    class Damage : Pickup
     {
-        //--------------------------------------
-		//  Constructor
-		//--------------------------------------
 		public Damage()
 		{
 			description = "Damage";
@@ -17,10 +14,12 @@ namespace Dojo.Source.Entity.Pickups
             visible = true;
 			DetermineEffect();
 		}
-        public void init() 
+
+        override public void Init() 
         {
-            SetTexture("Assets/Shuriken");
+            SetTexture("Assets/Pickups/Damage");
         }
+
 		override protected void Effect()
 		{
             player.damage += effect;

@@ -5,11 +5,8 @@ using System.Text;
 using Dojo.Source.Framework.Display;
 namespace Dojo.Source.Entity
 {
-    class Collectables : Static
+    class Pickup : Static
     {
-        //--------------------------------------
-        //  Properties
-        //--------------------------------------
         public bool active { get; protected set; }
         public string description { get; protected set; }
         public int chance { get; protected set; }
@@ -17,7 +14,7 @@ namespace Dojo.Source.Entity
         protected Player opposingPlayer;
         protected int effect;
 
-        public Collectables()
+        public Pickup()
             : base(true, (int)Orientation.NONE)
         {
             active = true;
@@ -26,9 +23,11 @@ namespace Dojo.Source.Entity
             visible = false;
         }
 
-        //--------------------------------------
-        //  Public methods
-        //--------------------------------------
+        public virtual void Init()
+        {
+
+        }
+
         public void Reset()
         {
             visible = true;
@@ -47,14 +46,8 @@ namespace Dojo.Source.Entity
             Destroy();
         }
 
-        //--------------------------------------
-        //  Destructor
-        //--------------------------------------
         public void Destroy()
         {
-            // Remove collision array instance.
-            //
-
             // Nullify variables.
             player = null;
             opposingPlayer = null;
@@ -63,10 +56,6 @@ namespace Dojo.Source.Entity
             chance = 0;
         }
 
-
-        //--------------------------------------
-        //  Protected methods
-        //--------------------------------------
         protected virtual void Effect()
         {
             // Effect of pickup should be carried out here.
@@ -74,15 +63,17 @@ namespace Dojo.Source.Entity
 
         protected void DetermineEffect()
         {
-            //do {
-            //    effect = Maths.RandomNumber(-3, 3);
-            //} while (effect == 0);
+            /*
+            do {
+                effect = Maths.RandomNumber(-3, 3);
+            } while (effect == 0);
 
-            //if (effect > 0) {
-            //    _description += " Up";
-            //} else {
-            //    _description += " Down";
-            //}
+            if (effect > 0) {
+                _description += " Up";
+            } else {
+                _description += " Down";
+            }
+             */
         }
     }
 }

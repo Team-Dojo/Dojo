@@ -17,9 +17,6 @@ namespace Dojo.Source
 {
     public class GameManager : Microsoft.Xna.Framework.Game
     {
-        //-----------------------------
-        // Properties
-        //-----------------------------
         // Display
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;

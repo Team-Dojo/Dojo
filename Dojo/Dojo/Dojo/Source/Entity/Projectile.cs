@@ -15,7 +15,6 @@ namespace Dojo.Source.Entity
         private bool active = true;
         private int range;
         private int distanceTravelled;
-        //private int bounces;
 
         public float damage { get; private set; }
 
@@ -28,7 +27,7 @@ namespace Dojo.Source.Entity
             range = 300;
             position.X = _x;
             position.Y = _y;
-            SetTexture("Assets/RedBar");            
+            SetTexture("Assets/Projectiles/Shuriken");            
             if (orientation == (int)Orientation.LEFT)
             {
                 speed.X *= -1;
@@ -49,7 +48,7 @@ namespace Dojo.Source.Entity
         {
             if (active)
             {
-                rotation += 2f;
+                //rotation += 2f;
                 if (distanceTravelled < range)
                 {
                     position.X += speed.X;

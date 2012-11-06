@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Dojo.Source.Framework.Display;
 using Dojo.Source.Entity;
 using Dojo.Source.UI;
@@ -23,8 +25,11 @@ namespace Dojo.Source.States
         private Court blueCourt = new Court((int)Court.Type.BLUE);
         public static List<Sprite> collisionArray;
         public static bool running = true;
-        private Sprite REDVICTORY = new Sprite(4);
-        private Sprite BLUEVICTORY = new Sprite(4);
+        private Sprite redVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
+        private Sprite blueVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
+        public int victor = -1;
+        private Song music;
+
 
         public Play()
         {
@@ -34,12 +39,14 @@ namespace Dojo.Source.States
 
         public override void Init()
         {
+            music = GameManager.contentManager.Load<Song>("Audio/Music/Song");
+
             collisionArray = new List<Sprite>();
-            REDVICTORY.SetTexture("Assets/RedVictory");
-            BLUEVICTORY.SetTexture("Assets/BlueVictory");
-            REDVICTORY.position.Y = 300;
-            BLUEVICTORY.position.Y = 300;
-            BLUEVICTORY.position.X = 700;
+            redVictorySprite.SetTexture("Assets/RedVictory");
+            blueVictorySprite.SetTexture("Assets/BlueVictory");
+            redVictorySprite.position.Y = 300;
+            blueVictorySprite.position.Y = 300;
+            blueVictorySprite.position.X = 700;
 
             player = new Player[num_players];
 
@@ -77,7 +84,14 @@ namespace Dojo.Source.States
         {
             if(running) 
             {
-                
+                if (player[Ref.PLAYER_ONE].stamina <= 0)
+                {
+                    victor = Ref.TEAM_TWO;
+                }
+                else if (player[Ref.PLAYER_TWO].stamina <= 0)
+                {
+                    victor = Ref.TEAM_ONE;
+                }
 
                 // Updates hud based on player array
                 hud.Update(player);
@@ -111,7 +125,7 @@ namespace Dojo.Source.States
                     {
                         if (player[i].HitTestObject(collisionArray[j]))
                         {
-                            if (!(collisionArray[j] is Projectile) && !(collisionArray[j] is Collectables))
+                            if (!(collisionArray[j] is Projectile) && !(collisionArray[j] is Pickup))
                             {
 
                                 if (player[i].orientation == (int)Player.Orientation.LEFT)
@@ -140,6 +154,11 @@ namespace Dojo.Source.States
 
         public override void Draw()
         {
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                //MediaPlayer.Play(music);
+            } 
+
             redCourt.Draw();
             blueCourt.Draw();
 
@@ -155,8 +174,17 @@ namespace Dojo.Source.States
             GameManager.spriteBatch.Draw(wall.texture, wall.position, Color.White);
 
             hud.Draw();
-            REDVICTORY.Draw();
-            BLUEVICTORY.Draw();
+
+            if (victor == Ref.TEAM_ONE)
+            {
+                redVictorySprite.Draw();
+            }
+            else if (victor == Ref.TEAM_TWO)
+            {
+                blueVictorySprite.Draw();
+            }
+
+            
             base.Draw();
         }
     }

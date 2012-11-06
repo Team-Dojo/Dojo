@@ -30,8 +30,8 @@ namespace Dojo.Source.UI
 
         public void Init()
         {
-            staminaBar[0].SetTexture("Assets/RedBar");
-            staminaBar[1].SetTexture("Assets/BlueBar");
+            staminaBar[0].SetTexture("Assets/UI/RedBar");
+            staminaBar[1].SetTexture("Assets/UI/BlueBar");
         }
 
         public void Draw()

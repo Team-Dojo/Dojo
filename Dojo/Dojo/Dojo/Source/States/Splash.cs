@@ -14,7 +14,7 @@ namespace Dojo.Source.States
     class Splash : State
     {
         private Static screen = new Static(false, (int)Sprite.Orientation.RIGHT);
-        //private ErrorBox error;
+        private ErrorBox errorBox;
 
         public Splash()
         {
@@ -23,7 +23,7 @@ namespace Dojo.Source.States
 
         public override void Init()
         {
-            screen.SetTexture("Assets/Splash");
+            screen.SetTexture("Assets/States/Splash");
 
             base.Init();
         }

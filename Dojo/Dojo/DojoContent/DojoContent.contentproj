@@ -56,7 +56,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Splash.jpg">
+    <Compile Include="Assets\States\Splash.jpg">
       <Name>Splash</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -68,7 +68,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\BlueBar.jpg">
+    <Compile Include="Assets\UI\BlueBar.jpg">
       <Name>BlueBar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -78,7 +78,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\RedBar.jpg">
+    <Compile Include="Assets\UI\RedBar.jpg">
       <Name>RedBar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -88,7 +88,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Shuriken.png">
+    <Compile Include="Assets\Projectiles\Shuriken.png">
       <Name>Shuriken</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -102,6 +102,48 @@
     </Compile>
     <Compile Include="Assets\RedVictory.png">
       <Name>RedVictory</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Audio\SFX\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\Music\Song.mp3">
+      <Name>Song</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Pickups\Damage.jpg">
+      <Name>Damage</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Pickups\FireRate.jpg">
+      <Name>FireRate</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Pickups\Range.jpg">
+      <Name>Range</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Pickups\ShotSpeed.jpg">
+      <Name>ShotSpeed</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Pickups\Speed.jpg">
+      <Name>Speed</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Pickups\Stamina.jpg">
+      <Name>Stamina</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
