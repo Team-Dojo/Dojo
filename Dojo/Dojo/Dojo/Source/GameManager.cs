@@ -49,7 +49,7 @@ namespace Dojo.Source
             // Configure display
             graphics.PreferredBackBufferWidth = Program.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = Program.SCREEN_HEIGHT;
-            graphics.IsFullScreen = false; // false = debug, true = release
+            graphics.IsFullScreen = true; // false = debug, true = release
             graphics.ApplyChanges();
 
             // Initialise states

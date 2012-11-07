@@ -14,7 +14,7 @@ namespace Dojo.Source.Entity.Pickups
 		{
 			description = "Fire Rate";
 			chance = 100;
-			DetermineEffect(-5, 25);
+			DetermineEffect(-10, 1);
 		}
         override public void Init() 
         {
@@ -22,7 +22,14 @@ namespace Dojo.Source.Entity.Pickups
         }
 		override protected void Effect()
 		{
-            player.FireRate += effect;
+            if ((player.FireRate + effect > 0) && (player.FireRate + effect < 100))
+            {
+                player.FireRate += effect;
+            }
+            else
+            {
+                player.FireRate = 1;
+            }
 		}
     }
 }

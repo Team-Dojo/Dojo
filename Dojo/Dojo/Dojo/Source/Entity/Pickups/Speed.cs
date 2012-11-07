@@ -22,8 +22,16 @@ namespace Dojo.Source.Entity.Pickups
         }
 		override protected void Effect()
 		{
-            player.acceleration.X += effect;
-            player.acceleration.Y += effect;
+            if (player.acceleration.X + effect > 5)
+            {
+                player.acceleration.X += effect;
+                player.acceleration.Y += effect;
+            }
+            else
+            {
+                player.acceleration.X = 5;
+                player.acceleration.Y = 5;
+            }
 		}
     }
 }

@@ -21,7 +21,14 @@ namespace Dojo.Source.Entity.Pickups
 
 		override protected void Effect()
 		{
-            player.damage += effect;
+            if (player.damage + effect > 5)
+            {
+                player.damage += effect;
+            }
+            else
+            {
+                player.damage = 5;
+            }
 		}
     }
 }

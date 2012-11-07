@@ -27,10 +27,12 @@ namespace Dojo.Source.Entity
         private int timer;
         public int FireRate;
         private bool isFiring;
-        public float damage = 5;
+        public float damage = 10;
         private string text;
         private int textTimer;
         private int pushFactor;
+        private bool disabled;
+        private bool canFire;
 
         public Player(PlayerIndex _ID, int _team, int _orientation, ContentManager content, int _x, int _y)
             : base(true, _orientation)
@@ -38,6 +40,8 @@ namespace Dojo.Source.Entity
             ID = _ID;
             team = _team;
 
+            canFire = true;
+            disabled = false;
             pushFactor = 0;
             textTimer = 0;
             contentMan = content;
@@ -47,10 +51,18 @@ namespace Dojo.Source.Entity
             spriteSheet = new SpriteSheet(texture, 40, 50);
             projectiles = new List<Projectile>();
             timer = 0;
-            FireRate = 10;
+            FireRate = 20;
             isFiring = true;
             position.X = _x;
             position.Y = _y;
+        }
+
+        public void Disable()
+        {
+            if (!disabled)
+            {
+                disabled = true;
+            }
         }
 
         private void ProcessInput()
@@ -93,6 +105,7 @@ namespace Dojo.Source.Entity
         private void HandleCollision()
         {
             List<Sprite> collisionArray = Play.collisionArray;
+            canFire = true;
             for (int i = 0; i < collisionArray.Count; i++)
             {
                 if (collisionArray[i].name == "wall")
@@ -112,6 +125,7 @@ namespace Dojo.Source.Entity
                         if (controller.IsButtonDown(Buttons.RightShoulder))
                         {
                             collisionArray[i].position.X += pushFactor;
+                            canFire = false;
                         }
                     }
                 }
@@ -150,7 +164,7 @@ namespace Dojo.Source.Entity
                         if (collect.active)
                         {
                             text = collect.description;
-                            textTimer = 50;
+                            textTimer = 75;
                             collect.Activate(this);
                             collisionArray.RemoveAt(i);
                             Play.pickupManager.RemovePickup();
@@ -162,22 +176,23 @@ namespace Dojo.Source.Entity
 
         private void Fire()
         {
-            if (timer == FireRate)
+            if (!isFiring && canFire)
             {
-                timer = 0;
-                isFiring = true;
+                if (timer >= FireRate)
+                {
+                    isFiring = true;
+                    timer = 0;
+                }
+                timer++;  
             }
             float RightTriggerPull = controller.Triggers.Right;
             if ((RightTriggerPull > 0) && (isFiring))
             {
-                stamina -= 1;
+                stamina -= 2;
                 Play.collisionArray.Add(projectile = new Projectile(team, orientation, position.X, position.Y, contentMan, damage));
                 isFiring = false;
+                
             }
-            else 
-            { 
-                timer++; 
-            }                 
         }
 
         public bool IsAlive()
@@ -202,8 +217,12 @@ namespace Dojo.Source.Entity
             {
                 if (textTimer != 0)
                 {
-                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2(position.X+2, (position.Y - 40+2)), Color.Black);
-                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2(position.X, (position.Y - 40)), Color.White);
+                    Vector2 strDim = new Vector2(Formats.arialSmall.MeasureString(text).X, Formats.arialSmall.MeasureString(text).Y);
+                    int hX = (int)position.X + (width / 2);
+                    int offset = 2;
+
+                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2((hX + offset) - ((int)strDim.X / 2), (position.Y - 40 + offset)), Color.Black);
+                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2(hX - ((int)strDim.X / 2), (position.Y - 40)), Color.White);
                     textTimer--;
                 }
             }
@@ -211,28 +230,31 @@ namespace Dojo.Source.Entity
 
         public void Update()
         {
-            controller = GamePad.GetState(ID);
-
-            HandleCollision();
-            ProcessInput();
-            UpdatePosition();
-            Fire();
-
-            if (IsAlive())
+            if (!disabled)
             {
-                stamina += 0.05f;
-                
-            }
+                controller = GamePad.GetState(ID);
 
-            percentStamina = (stamina / maxStamina);
+                HandleCollision();
+                ProcessInput();
+                UpdatePosition();
+                Fire();
 
-            if (stamina >= 100)
-            {
-                stamina = 100;
-            }
-            if (stamina < 0)
-            {
-                stamina = 0;
+                if (IsAlive())
+                {
+                    stamina += 0.05f;
+
+                }
+
+                percentStamina = (stamina / maxStamina);
+
+                if (stamina >= 100)
+                {
+                    stamina = 100;
+                }
+                if (stamina < 0)
+                {
+                    stamina = 0;
+                }
             }
         }
     }

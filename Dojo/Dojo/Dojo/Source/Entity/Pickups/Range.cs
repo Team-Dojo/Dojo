@@ -24,7 +24,14 @@ namespace Dojo.Source.Entity.Pickups
 		{
             if (player.projectile != null)
             {
-                player.projectile.range += effect;
+                if (player.projectile.range + effect > 100)
+                {
+                    player.projectile.range += effect;
+                }
+                else
+                {
+                    player.projectile.range = 100;
+                }
             }
 		}
     }

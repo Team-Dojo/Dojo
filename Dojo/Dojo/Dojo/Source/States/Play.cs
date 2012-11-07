@@ -91,7 +91,7 @@ namespace Dojo.Source.States
             }
 
             redVictorySprite.position.X = blueVictorySprite.position.X = (Program.SCREEN_WIDTH / 2) - 250;
-            redVictorySprite.position.Y = blueVictorySprite.position.Y = (Program.SCREEN_HEIGHT / 2) - 250;
+            redVictorySprite.position.Y = blueVictorySprite.position.Y = (Program.SCREEN_HEIGHT / 2) - 350;
 
             wall.position = new Vector2(((Program.SCREEN_WIDTH / 2) - (wall.width / 2)), 120);
 
@@ -143,6 +143,7 @@ namespace Dojo.Source.States
                 {
                     victor = Ref.TEAM_TWO;
                     wall.position.X -= speed;
+                    player[Ref.PLAYER_ONE].Disable();
                     if (speed < 30)
                     {
                         speed++;
@@ -152,6 +153,7 @@ namespace Dojo.Source.States
                 {
                     victor = Ref.TEAM_ONE;
                     wall.position.X += speed;
+                    player[Ref.PLAYER_TWO].Disable();
                     if (speed < 30)
                     {
                         speed++;
