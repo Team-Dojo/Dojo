@@ -13,46 +13,59 @@ namespace Dojo.Source.States
 {
     class Splash : State
     {
-        private Static screen = new Static(false, (int)Sprite.Orientation.RIGHT);
-        private ErrorBox errorBox;
+        private Static screen;
+        private Sprite instruction;
+        private int timer;
+        private bool drawInstruction;
+        private const int TIMER_END = 75;
+        private const int TIMER_START = 0;
+        private const int DELAY = 20;
 
         public Splash()
         {
-            
+            drawInstruction = true;
+            screen = new Static(false, (int)Sprite.Orientation.RIGHT);
+            instruction = new Sprite((int)Sprite.Orientation.NONE);
+            timer = 0;
         }
 
         public override void Init()
         {
             screen.SetTexture("Assets/States/Splash");
+            instruction.SetTexture("Assets/States/SplashPlay");
 
             base.Init();
         }
 
         public override void Load()
         {
-            //error = new ErrorBox("TEST TEST TEST", Formats.arial);
-
             base.Load();
         }
 
         public override void Update()
         {
-            // Switch state
-            for (int i = 0; i < Ref.MAX_PLAYERS; i++)
+            if (timer == TIMER_END)
             {
-                if (controller[i].IsConnected)
+                if (drawInstruction)
                 {
-                    if (controller[i].Buttons.A == ButtonState.Pressed)
-                    {
-                        GameManager.SwitchState(StateID.PLAY);
-                    }
+                    timer = TIMER_END - DELAY;
                 }
-            }
+                else
+                {
+                    timer = TIMER_START;
+                }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                drawInstruction = !drawInstruction;
+            }
+          
+
+            // Switch state
+            if (Pressed(Buttons.A))
             {
                 GameManager.SwitchState(StateID.PLAY);
             }
+
+            timer++;
 
             base.Update();
         }
@@ -60,7 +73,10 @@ namespace Dojo.Source.States
         public override void Draw()
         {
             GameManager.spriteBatch.Draw(screen.texture, Vector2.Zero, Color.White);
-            //error.Draw();
+            if (drawInstruction)
+            {
+                GameManager.spriteBatch.Draw(instruction.texture, new Vector2(440, 615), Color.White);
+            }
 
             base.Draw();
         }

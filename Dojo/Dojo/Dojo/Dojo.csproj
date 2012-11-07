@@ -107,12 +107,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Entity\Abstract\PickupManager.cs" />
     <Compile Include="Source\Entity\Pickup.cs" />
     <Compile Include="Source\Entity\Court.cs" />
     <Compile Include="Source\Entity\Pickups\Damage.cs" />
-    <Compile Include="Source\Resources\PickUps.cs" />
+    <Compile Include="Source\Entity\Pickups\FireRate.cs" />
+    <Compile Include="Source\Entity\Pickups\Speed.cs" />
+    <Compile Include="Source\Entity\Pickups\Range.cs" />
+    <Compile Include="Source\Entity\Pickups\Stamina.cs" />
     <Compile Include="Source\Resources\Ref.cs" />
-    <Compile Include="Source\UI\ErrorBox.cs" />
+    <Compile Include="Source\States\Intro.cs" />
+    <Compile Include="Source\UI\MessageBox.cs" />
     <Compile Include="Source\Framework\Display\State.cs" />
     <Compile Include="Source\Framework\Display\Dynamic.cs" />
     <Compile Include="Source\Framework\Display\Sprite.cs" />

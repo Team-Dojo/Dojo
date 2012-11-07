@@ -15,5 +15,13 @@ Content\Assets\Pickups\Range.xnb
 Content\Assets\Pickups\ShotSpeed.xnb
 Content\Assets\Pickups\Speed.xnb
 Content\Assets\Pickups\Stamina.xnb
-Content\Audio\Music\Song.xnb
-Content\Audio\Music\Song.wma
+Content\Videos\Intro.xnb
+Content\Fonts\ArialLarge.xnb
+Content\Fonts\ArialSmall.xnb
+Content\Audio\Music\Play.xnb
+Content\Audio\Music\Intro.xnb
+Content\Fonts\ArialTiny.xnb
+Content\Assets\States\SplashPlay.xnb
+Content\Videos\Intro.wmv
+Content\Audio\Music\Play.wma
+Content\Audio\Music\Intro.wma

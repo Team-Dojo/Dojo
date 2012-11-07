@@ -13,7 +13,7 @@ namespace Dojo.Source.Entity
     {
         public int team;
         private bool active = true;
-        private int range;
+        public int range;
         private int distanceTravelled;
 
         public float damage { get; private set; }
@@ -23,7 +23,7 @@ namespace Dojo.Source.Entity
         {
             damage = _damage;
             team = _team;
-            speed.X = 10;
+            speed.X = 5;
             range = 300;
             position.X = _x;
             position.Y = _y;

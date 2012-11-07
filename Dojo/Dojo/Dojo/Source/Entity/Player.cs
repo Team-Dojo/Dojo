@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Dojo.Source.Framework.Display;
 using Dojo.Source.States;
 using System.Timers;
+using Dojo.Source.Resources;
 
 namespace Dojo.Source.Entity
 {
@@ -20,13 +21,16 @@ namespace Dojo.Source.Entity
         public float stamina = 100;
         public float maxStamina = 100;
         public float percentStamina;
-        private Projectile projectile;
+        public Projectile projectile;
         private ContentManager contentMan;
         public List<Projectile> projectiles;
         private int timer;
-        private int FireRate;
+        public int FireRate;
         private bool isFiring;
         public float damage = 5;
+        private string text;
+        private int textTimer;
+        private int pushFactor;
 
         public Player(PlayerIndex _ID, int _team, int _orientation, ContentManager content, int _x, int _y)
             : base(true, _orientation)
@@ -34,6 +38,8 @@ namespace Dojo.Source.Entity
             ID = _ID;
             team = _team;
 
+            pushFactor = 0;
+            textTimer = 0;
             contentMan = content;
             acceleration.X = 4;
             acceleration.Y = 4;
@@ -69,18 +75,18 @@ namespace Dojo.Source.Entity
             {
                 position.X = 0;
             }
-            if (position.X + width > Program.baseScreenSize.X)
+            if (position.X + width > Program.SCREEN_WIDTH)
             {
-                position.X = Program.baseScreenSize.X - width;
+                position.X = (Program.SCREEN_WIDTH - width);
             }
 
             if (position.Y < 120)
             {
                 position.Y = 120;
             }
-            if ((position.Y + height) > Program.baseScreenSize.Y)
+            if ((position.Y + height) > Program.SCREEN_HEIGHT)
             {
-                position.Y = (Program.baseScreenSize.Y - height);
+                position.Y = (Program.SCREEN_HEIGHT - height);
             }
         }
 
@@ -89,6 +95,27 @@ namespace Dojo.Source.Entity
             List<Sprite> collisionArray = Play.collisionArray;
             for (int i = 0; i < collisionArray.Count; i++)
             {
+                if (collisionArray[i].name == "wall")
+                {
+                    if (HitTestObject(collisionArray[i]))
+                    {
+                        switch (team)
+                        {
+                            case Ref.TEAM_ONE:
+                                pushFactor = 1;
+                                break;
+
+                            case Ref.TEAM_TWO:
+                                pushFactor = -1;
+                                break;
+                        }
+                        if (controller.IsButtonDown(Buttons.RightShoulder))
+                        {
+                            collisionArray[i].position.X += pushFactor;
+                        }
+                    }
+                }
+
                 if (collisionArray[i] is Projectile)
                 {
                     if (collisionArray.ElementAt(i) is Projectile)
@@ -122,14 +149,16 @@ namespace Dojo.Source.Entity
                     {
                         if (collect.active)
                         {
+                            text = collect.description;
+                            textTimer = 50;
                             collect.Activate(this);
                             collisionArray.RemoveAt(i);
+                            Play.pickupManager.RemovePickup();
                         }
                     }
                 }
             }
         }
-        
 
         private void Fire()
         {
@@ -141,15 +170,14 @@ namespace Dojo.Source.Entity
             float RightTriggerPull = controller.Triggers.Right;
             if ((RightTriggerPull > 0) && (isFiring))
             {
-                stamina -= 5;
+                stamina -= 1;
                 Play.collisionArray.Add(projectile = new Projectile(team, orientation, position.X, position.Y, contentMan, damage));
                 isFiring = false;
             }
             else 
             { 
                 timer++; 
-            }
-                            
+            }                 
         }
 
         public bool IsAlive()
@@ -168,6 +196,15 @@ namespace Dojo.Source.Entity
                 if (Play.collisionArray.ElementAt(i) is Projectile)
                 {
                     Play.collisionArray.ElementAt(i).Draw();
+                }
+            }
+            if (text != null)
+            {
+                if (textTimer != 0)
+                {
+                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2(position.X+2, (position.Y - 40+2)), Color.Black);
+                    GameManager.spriteBatch.DrawString(Formats.arialSmall, text, new Vector2(position.X, (position.Y - 40)), Color.White);
+                    textTimer--;
                 }
             }
         }

@@ -11,8 +11,7 @@ namespace Dojo.Source.Entity.Pickups
 		{
 			description = "Damage";
 			chance = 100;
-            visible = true;
-			DetermineEffect();
+			DetermineEffect(-2, 10);
 		}
 
         override public void Init() 

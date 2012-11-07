@@ -13,11 +13,11 @@ namespace Dojo.Source.Framework.Display
     /// </summary>
     class Sprite
     {
+        public string name; // Use: object referencing
         public int height { get; protected set; }
         public int width { get; protected set; }
         public Texture2D texture { get; protected set; }
         public int orientation { get; private set; } // Determines which way the sprite is facing
-
         public float rotation = 0.0f;
         public Vector2 scale = new Vector2(1, 1);
         public bool visible = true; // Determines if the object should be drawn to the display
@@ -29,6 +29,7 @@ namespace Dojo.Source.Framework.Display
 
         public Sprite(int _orientation)
         {
+            name = "undefined";
             texture = null;
             orientation = _orientation;
         }

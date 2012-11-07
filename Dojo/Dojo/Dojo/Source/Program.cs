@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Xna.Framework;
 
 namespace Dojo.Source
 {
@@ -7,7 +6,9 @@ namespace Dojo.Source
     static class Program
     {
         // Properties
-        public static Vector2 baseScreenSize = new Vector2(1280, 720); // Important game elements have to be rendered in 80% - 90% of the fullscreen size.
+        public static int SCREEN_WIDTH  = 1280;
+        public static int SCREEN_HEIGHT = 720;
+        public static string BUILD = "Alpha Build 6.5";
 
         /// <summary>
         /// The main entry point for the application.

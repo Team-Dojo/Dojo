@@ -11,51 +11,74 @@ using Dojo.Source.Framework.Display;
 using Dojo.Source.Entity;
 using Dojo.Source.UI;
 using Dojo.Source.Resources;
+using Dojo.Source.Entity.Abstract;
 
 namespace Dojo.Source.States
 {
     class Play : State
     {
-        private int team_size = 1;
-        private int num_players;
-        private Player[] player;
-        public static Static wall = new Static(true, (int)Static.Orientation.NONE);
+        public static bool running;
+        public static Static wall;
         public static HUD hud;
-        private Court redCourt = new Court((int)Court.Type.RED);
-        private Court blueCourt = new Court((int)Court.Type.BLUE);
+        public static PickupManager pickupManager;
         public static List<Sprite> collisionArray;
-        public static bool running = true;
-        private Sprite redVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
-        private Sprite blueVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
-        public int victor = -1;
-        private Song music;
+        public static int numPlayers;
+        public static Player[] player;
 
+        private int victor = -1;
+        private int teamSize;
+        private Court redCourt;
+        private Court blueCourt;
+        private Sprite redVictorySprite;
+        private Sprite blueVictorySprite;
+        private int speed;
+        private MessageBox pauseMessage;
 
         public Play()
         {
-            num_players = team_size * 2;
-            hud = new HUD(team_size);
+            speed = 1;
+            pickupManager = new PickupManager();
+            pauseMessage = null;
+            running = false;
+            teamSize = 1;
+
+            redCourt = new Court((int)Court.Type.RED);
+            blueCourt = new Court((int)Court.Type.BLUE);
+            wall = new Static(true, (int)Static.Orientation.NONE);
+            wall.name = "wall";
+            redVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
+            blueVictorySprite = new Sprite((int)Sprite.Orientation.NONE);
+
+            hud = new HUD(teamSize);
+            collisionArray = new List<Sprite>();
+        }
+
+        public override void Unload()
+        {
+            running = false;
+            MediaPlayer.Stop();
+            redVictorySprite = null;
+            blueVictorySprite = null;
+            collisionArray = null;
+            player = null;
+
+            base.Unload();
         }
 
         public override void Init()
         {
-            music = GameManager.contentManager.Load<Song>("Audio/Music/Song");
+            running = true;
 
-            collisionArray = new List<Sprite>();
-            redVictorySprite.SetTexture("Assets/RedVictory");
-            blueVictorySprite.SetTexture("Assets/BlueVictory");
-            redVictorySprite.position.Y = 300;
-            blueVictorySprite.position.Y = 300;
-            blueVictorySprite.position.X = 700;
+            numPlayers = (teamSize * 2);
+            player = new Player[numPlayers];
 
-            player = new Player[num_players];
-
-            if (team_size == Ref.MIN_TEAM_SIZE)
+            // Instantiate players
+            if (teamSize == Ref.MIN_TEAM_SIZE)
             {
                 player[0] = new Player(PlayerIndex.One, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 380);
                 player[1] = new Player(PlayerIndex.Two, Ref.TEAM_TWO, (int)Player.Orientation.LEFT, GameManager.contentManager, 740, 380);
             }
-            else if (team_size == Ref.MIN_TEAM_SIZE)
+            else if (teamSize == Ref.MAX_TEAM_SIZE)
             {
                 player[0] = new Player(PlayerIndex.One, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 340);
                 player[1] = new Player(PlayerIndex.Two, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 400);
@@ -64,40 +87,82 @@ namespace Dojo.Source.States
             }
             else
             {
-                System.Console.WriteLine("ERROR: NUM_PLAYERS is not even (must be set to 2 or 4 in order to play)");
+                System.Console.WriteLine("ERROR: numPlayers is not even (must be set to 2 or 4 in order to play)");
             }
 
+            redVictorySprite.position.X = blueVictorySprite.position.X = (Program.SCREEN_WIDTH / 2) - 250;
+            redVictorySprite.position.Y = blueVictorySprite.position.Y = (Program.SCREEN_HEIGHT / 2) - 250;
+
+            wall.position = new Vector2(((Program.SCREEN_WIDTH / 2) - (wall.width / 2)), 120);
+
+            // Initialise game components
             redCourt.Init();
             blueCourt.Init();
-
             hud.Init();
 
-            wall.SetTexture("Assets/Bar");
-            wall.position = new Vector2(((Program.baseScreenSize.X/2) - (wall.width/2)), 120);
-
+            // Update collision array
             collisionArray.Add(wall);
 
             base.Init();
         }
 
+        public override void Load()
+        {
+            redVictorySprite.SetTexture("Assets/RedVictory");
+            blueVictorySprite.SetTexture("Assets/BlueVictory");
+
+            // Position sprites and game objects
+            wall.SetTexture("Assets/Bar");
+
+            base.Load();
+        }
+
         public override void Update()
         {
+            // Pause
+            if (Pressed(Buttons.Start))
+            {
+                Pause();
+            }
+
+            // Reset
+            for (int i = 0; i < numPlayers; i++)
+            {
+                if (controller[i].IsButtonDown(Buttons.A) &&
+                    controller[i].IsButtonDown(Buttons.B) &&
+                    controller[i].IsButtonDown(Buttons.X) &&
+                    controller[i].IsButtonDown(Buttons.Y))
+                {
+                    Reset();
+                }
+            }
+
             if(running) 
             {
                 if (player[Ref.PLAYER_ONE].stamina <= 0)
                 {
                     victor = Ref.TEAM_TWO;
+                    wall.position.X -= speed;
+                    if (speed < 30)
+                    {
+                        speed++;
+                    }
                 }
                 else if (player[Ref.PLAYER_TWO].stamina <= 0)
                 {
                     victor = Ref.TEAM_ONE;
+                    wall.position.X += speed;
+                    if (speed < 30)
+                    {
+                        speed++;
+                    }
                 }
 
                 // Updates hud based on player array
                 hud.Update(player);
 
                 // Updates players
-                for (int i = 0; i < num_players; i++)
+                for (int i = 0; i < numPlayers; i++)
                 {
                     player[i].Update();
                 }
@@ -105,21 +170,25 @@ namespace Dojo.Source.States
                 redCourt.Update();
                 blueCourt.Update();
 
+                // Update pickups
+                pickupManager.Update();
+
                 // Moves wall (X/B buttons)
-                for (int z = 0; z < num_players; z++)
+                if (wall.position.X <= 0 - (wall.width / 2))
                 {
-                    if (controller[z].Buttons.X == ButtonState.Pressed)
-                    {
-                        wall.position.X -= 2;
-                    }
-                    if (controller[z].Buttons.B == ButtonState.Pressed)
-                    {
-                        wall.position.X += 2;
-                    }
+                    wall.position.X = 0 - (wall.width / 2);
+                    victor = Ref.TEAM_TWO;
+                    speed = 0;
+                }
+                if (wall.position.X + (wall.width / 2) >= Program.SCREEN_WIDTH)
+                {
+                    wall.position.X = Program.SCREEN_WIDTH - (wall.width / 2);
+                    victor = Ref.TEAM_ONE;
+                    speed = 0;
                 }
 
                 // Handles player collision detection
-                for (int i = 0; i < num_players; i++)
+                for (int i = 0; i < numPlayers; i++)
                 {
                     for (int j = 0; j < collisionArray.Count; j++)
                     {
@@ -137,38 +206,69 @@ namespace Dojo.Source.States
                                     player[i].position.X = (collisionArray[j].position.X - player[i].width);
                                 }
                             }
-                            /*
-                            if (controller[i].Buttons.RightShoulder == ButtonState.Pressed)
-                            {
-                                wall.position.X += 2;
-                            }
-                             */
                         }
                     }
                 }
 
-                base.Update();
+                
+            }
+            base.Update();
+        }
+
+        public void Reset()
+        {
+            // Instantiate players
+            if (teamSize == Ref.MIN_TEAM_SIZE)
+            {
+                player[0] = new Player(PlayerIndex.One, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 380);
+                player[1] = new Player(PlayerIndex.Two, Ref.TEAM_TWO, (int)Player.Orientation.LEFT, GameManager.contentManager, 740, 380);
+            }
+            else if (teamSize == Ref.MAX_TEAM_SIZE)
+            {
+                player[0] = new Player(PlayerIndex.One, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 340);
+                player[1] = new Player(PlayerIndex.Two, Ref.TEAM_ONE, (int)Player.Orientation.RIGHT, GameManager.contentManager, 500, 400);
+                player[2] = new Player(PlayerIndex.Three, Ref.TEAM_TWO, (int)Player.Orientation.LEFT, GameManager.contentManager, 740, 340);
+                player[3] = new Player(PlayerIndex.Four, Ref.TEAM_TWO, (int)Player.Orientation.LEFT, GameManager.contentManager, 740, 400);
+            }
+            else
+            {
+                System.Console.WriteLine("ERROR: numPlayers is not even (must be set to 2 or 4 in order to play)");
             }
 
+            victor = -1;
+
+            wall.position = new Vector2(((Program.SCREEN_WIDTH / 2) - (wall.width / 2)), 120);
+        }
+
+        public void Pause()
+        {
+            if (running)
+            {
+                running = false;
+                pauseMessage = new MessageBox("GAME PAUSED", Formats.arialLarge);
+            }
+            else
+            {
+                running = true;
+                pauseMessage = null;
+            }
         }
 
         public override void Draw()
         {
-            if (MediaPlayer.State != MediaState.Playing)
-            {
-                //MediaPlayer.Play(music);
-            } 
-
             redCourt.Draw();
             blueCourt.Draw();
 
-            GameManager.spriteBatch.DrawString(Formats.arial, "Player 1: " + player[0].stamina, new Vector2(20, 5), Color.Red);
-            GameManager.spriteBatch.DrawString(Formats.arial, "Player 2: " + player[1].stamina, new Vector2(600, 5), Color.Blue);
+            // Draw pickups
+            pickupManager.Draw();
 
-            for (int i = 0; i < num_players; i++)
+            GameManager.spriteBatch.DrawString(Formats.arial, "Player 1", new Vector2(20, 15), Color.Red);
+            GameManager.spriteBatch.DrawString(Formats.arial, "Player 2", new Vector2(1115, 15), Color.Blue);
+
+            for (int i = 0; i < numPlayers; i++)
             {
-                player[i].Draw();
                 player[i].DrawProj();
+                player[i].Draw();
             }
 
             GameManager.spriteBatch.Draw(wall.texture, wall.position, Color.White);
@@ -184,7 +284,11 @@ namespace Dojo.Source.States
                 blueVictorySprite.Draw();
             }
 
-            
+            if (pauseMessage != null)
+            {
+                pauseMessage.Draw();
+            }
+
             base.Draw();
         }
     }

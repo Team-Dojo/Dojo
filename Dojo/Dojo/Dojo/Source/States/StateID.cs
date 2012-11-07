@@ -15,5 +15,6 @@ namespace Dojo.Source
         public const int CHARACTER_SELECT = 2;
         public const int PLAY = 3;
         public const int STATS = 4;
+        public const int INTRO = 5;
     }
 }

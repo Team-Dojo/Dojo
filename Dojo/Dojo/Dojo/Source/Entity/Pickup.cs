@@ -17,30 +17,20 @@ namespace Dojo.Source.Entity
         public Pickup()
             : base(true, (int)Orientation.NONE)
         {
-            active = true;
-            effect = -20;
             description = "description undefined";
-            visible = false;
+            active = true;
+            visible = true;
         }
 
         public virtual void Init()
         {
-
-        }
-
-        public void Reset()
-        {
-            visible = true;
-            active = true;
+            // Initialise texture
         }
 
         public void Activate(Player players)
         {
             player = players;
             opposingPlayer = players;
-
-            visible = false;
-            active = false;
 
             Effect();
             Destroy();
@@ -52,6 +42,7 @@ namespace Dojo.Source.Entity
             player = null;
             opposingPlayer = null;
             active = false;
+            visible = false;
             description = "";
             chance = 0;
         }
@@ -61,19 +52,18 @@ namespace Dojo.Source.Entity
             // Effect of pickup should be carried out here.
         }
 
-        protected void DetermineEffect()
+        protected void DetermineEffect(int min, int max)
         {
-            /*
+            Random rand = new Random();
             do {
-                effect = Maths.RandomNumber(-3, 3);
+                effect = rand.Next(min, max);
             } while (effect == 0);
 
             if (effect > 0) {
-                _description += " Up";
+                description += " Up";
             } else {
-                _description += " Down";
+                description += " Down";
             }
-             */
         }
     }
 }

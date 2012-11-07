@@ -12,20 +12,20 @@ namespace Dojo.Source.UI
 {
     class HUD
     {
-        private const int NUM_BARS = 2;
-        private int team_size;
-        private Sprite[] staminaBar = new Sprite[NUM_BARS];
         public const int HEIGHT = 120;
         public const int WIDTH = 1280;
+        private const int NUM_BARS = 2;
+        private int teamSize;
+        private Sprite[] staminaBar = new Sprite[NUM_BARS];
 
-        public HUD(int _team_size)
+        public HUD(int _teamSize)
         {
-            team_size = _team_size;
+            teamSize = _teamSize;
 
             staminaBar[0] = new Sprite((int)Sprite.Orientation.RIGHT);
-            staminaBar[0].position = new Vector2(20, 50);
+            staminaBar[0].position = new Vector2(20, 60);
             staminaBar[1] = new Sprite((int)Sprite.Orientation.LEFT);
-            staminaBar[1].position = new Vector2(950, 50);
+            staminaBar[1].position = new Vector2(950, 60);
         }
 
         public void Init()
@@ -44,13 +44,13 @@ namespace Dojo.Source.UI
 
         public void Update(Player[] player)
         {
-            if (team_size == 1)
+            if (teamSize == Ref.MIN_TEAM_SIZE)
             {
                 staminaBar[Ref.TEAM_ONE].scale.X = player[0].percentStamina;
                 staminaBar[Ref.TEAM_TWO].scale.X = player[1].percentStamina;
-                staminaBar[Ref.TEAM_TWO].position.X = 1250 - (3f * player[1].stamina);
+                staminaBar[Ref.TEAM_TWO].position.X = 1250 - (3f * player[1].stamina); // Madness!
             }
-            else if (team_size == 2)
+            else if (teamSize == Ref.MAX_TEAM_SIZE)
             {
                 staminaBar[Ref.TEAM_ONE].scale.X = 1;
                 staminaBar[Ref.TEAM_TWO].scale.X = 1;
