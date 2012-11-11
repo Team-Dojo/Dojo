@@ -14,7 +14,7 @@ namespace Dojo.Source.Entity.Pickups
         {
             description = "Stamina";
             chance = 100;
-            DetermineEffect(-5, 5);
+            DetermineEffect(-20, 20);
         }
         override public void Init()
         {
@@ -22,7 +22,7 @@ namespace Dojo.Source.Entity.Pickups
         }
         override protected void Effect()
         {
-            //player.stamina += effect;
+            player.stamina += effect;
         }
     }
 }

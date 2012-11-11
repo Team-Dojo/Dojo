@@ -27,10 +27,9 @@ namespace Dojo.Source.Entity.Abstract
 
         public Pickup ReturnPickup()
         {
-            //Pickup[] PICKUPS = new Pickup[] { new FireRate()};
-            Pickup[] PICKUPS = new Pickup[] { new Damage(), new Speed(), new FireRate(), new Range(), new Stamina() };
+            Pickup[] PICKUPS = new Pickup[] { new Damage(), new Speed(), new FireRate(), new Range(), new Stamina(), new ShotSpeed() };
             Random rand = new Random();
-            int pickupNum = rand.Next(0, (PICKUPS.Length - 1));
+            int pickupNum = rand.Next(0, (PICKUPS.Length));
 
             PICKUPS[pickupNum].Init();
 

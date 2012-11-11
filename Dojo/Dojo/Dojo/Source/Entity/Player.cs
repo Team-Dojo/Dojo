@@ -33,6 +33,10 @@ namespace Dojo.Source.Entity
         private int pushFactor;
         private bool disabled;
         private bool canFire;
+        private int wallTimer;
+        private bool wallHit;
+        public int range;
+        public int shotSpeed;
 
         public Player(PlayerIndex _ID, int _team, int _orientation, ContentManager content, int _x, int _y)
             : base(true, _orientation)
@@ -40,6 +44,10 @@ namespace Dojo.Source.Entity
             ID = _ID;
             team = _team;
 
+            range = 300;
+            shotSpeed = 5;
+            wallHit = false;
+            wallTimer = 0;
             canFire = true;
             disabled = false;
             pushFactor = 0;
@@ -125,11 +133,22 @@ namespace Dojo.Source.Entity
                         if (controller.IsButtonDown(Buttons.RightShoulder))
                         {
                             collisionArray[i].position.X += pushFactor;
+                            stamina -= 0.25f;
                             canFire = false;
+                            wallHit = true;
+                            isFiring = false;
                         }
                     }
                 }
-
+                if (wallHit)
+                {
+                    wallTimer++;
+                    if (wallTimer >= 600)
+                    {
+                        wallTimer = 0;
+                        wallHit = false;
+                    }
+                }
                 if (collisionArray[i] is Projectile)
                 {
                     if (collisionArray.ElementAt(i) is Projectile)
@@ -176,20 +195,23 @@ namespace Dojo.Source.Entity
 
         private void Fire()
         {
-            if (!isFiring && canFire)
+            if (!wallHit)
             {
-                if (timer >= FireRate)
+                if (!isFiring && canFire)
                 {
-                    isFiring = true;
-                    timer = 0;
+                    if (timer >= FireRate)
+                    {
+                        isFiring = true;
+                        timer = 0;
+                    }
+                    timer++;
                 }
-                timer++;  
             }
             float RightTriggerPull = controller.Triggers.Right;
             if ((RightTriggerPull > 0) && (isFiring))
             {
                 stamina -= 2;
-                Play.collisionArray.Add(projectile = new Projectile(team, orientation, position.X, position.Y, contentMan, damage));
+                Play.collisionArray.Add(projectile = new Projectile(team, orientation, position.X, position.Y, contentMan, damage, range, shotSpeed));
                 isFiring = false;
                 
             }

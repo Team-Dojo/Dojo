@@ -18,13 +18,13 @@ namespace Dojo.Source.Entity
 
         public float damage { get; private set; }
 
-        public Projectile(int _team, int _orientation, float _x, float _y,  ContentManager content, float _damage)
+        public Projectile(int _team, int _orientation, float _x, float _y,  ContentManager content, float _damage, int _range, int _speed)
             : base(true, _orientation)
         {
             damage = _damage;
             team = _team;
-            speed.X = 5;
-            range = 300;
+            speed.X = (float)_speed;
+            range = _range;
             position.X = _x;
             position.Y = _y;
             SetTexture("Assets/Projectiles/Shuriken");            

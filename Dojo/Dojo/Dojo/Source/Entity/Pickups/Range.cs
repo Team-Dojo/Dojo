@@ -22,17 +22,14 @@ namespace Dojo.Source.Entity.Pickups
         }
 		override protected void Effect()
 		{
-            if (player.projectile != null)
+            if (player.range + effect > 100)
             {
-                if (player.projectile.range + effect > 100)
-                {
-                    player.projectile.range += effect;
-                }
-                else
-                {
-                    player.projectile.range = 100;
-                }
+                player.range += effect;
             }
-		}
+            else
+            {
+                player.range = 100;
+            }
+        }
     }
 }

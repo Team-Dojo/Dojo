@@ -132,8 +132,12 @@ namespace Dojo.Source.States
                     controller[i].IsButtonDown(Buttons.B) &&
                     controller[i].IsButtonDown(Buttons.X) &&
                     controller[i].IsButtonDown(Buttons.Y))
-                {
-                    Reset();
+                {                   
+                    float RightTrigger = controller[i].Triggers.Right;
+                    if (RightTrigger <= 0)
+                    {
+                        Reset();
+                    }
                 }
             }
 
@@ -240,6 +244,17 @@ namespace Dojo.Source.States
             victor = -1;
 
             wall.position = new Vector2(((Program.SCREEN_WIDTH / 2) - (wall.width / 2)), 120);
+
+            for (int a = 0; a < collisionArray.Count; a++)
+            {
+                if (collisionArray[a] is Pickup)
+                {
+                   collisionArray.RemoveAt(a);
+                   pickupManager.RemovePickup();
+                    a--;
+                }
+            
+            }
         }
 
         public void Pause()
@@ -267,13 +282,16 @@ namespace Dojo.Source.States
             GameManager.spriteBatch.DrawString(Formats.arial, "Player 1", new Vector2(20, 15), Color.Red);
             GameManager.spriteBatch.DrawString(Formats.arial, "Player 2", new Vector2(1115, 15), Color.Blue);
 
+            GameManager.spriteBatch.Draw(wall.texture, wall.position, Color.White);
+
             for (int i = 0; i < numPlayers; i++)
             {
                 player[i].DrawProj();
+            }
+            for (int i = 0; i < numPlayers; i++)
+            {
                 player[i].Draw();
             }
-
-            GameManager.spriteBatch.Draw(wall.texture, wall.position, Color.White);
 
             hud.Draw();
 

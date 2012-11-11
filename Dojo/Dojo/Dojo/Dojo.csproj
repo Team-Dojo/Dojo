@@ -112,6 +112,7 @@
     <Compile Include="Source\Entity\Court.cs" />
     <Compile Include="Source\Entity\Pickups\Damage.cs" />
     <Compile Include="Source\Entity\Pickups\FireRate.cs" />
+    <Compile Include="Source\Entity\Pickups\ShotSpeed.cs" />
     <Compile Include="Source\Entity\Pickups\Speed.cs" />
     <Compile Include="Source\Entity\Pickups\Range.cs" />
     <Compile Include="Source\Entity\Pickups\Stamina.cs" />
