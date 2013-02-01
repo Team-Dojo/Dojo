@@ -1,6 +1,6 @@
 Dojo
 ====
-Created in one semester for the Abertay Game Developmet Society (GDS).
+Created in one semester for the Abertay Game Developmet Society (GDS) and showcased publicly at the University.
 
 Legal
 =====
