@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Dojo.Source.Framework.Display;
+using Dojo.Source.Display;
 using Dojo.Source.States;
 using Dojo.Source.Resources;
 

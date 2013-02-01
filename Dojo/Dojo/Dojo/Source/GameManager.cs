@@ -8,8 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Dojo.Source.Entity;
-using Dojo.Source.Framework.Display;
+using Dojo.Source.Entities;
+using Dojo.Source.Display;
 using Dojo.Source.States;
 using Dojo.Source.Resources;
 
@@ -21,16 +21,17 @@ namespace Dojo.Source
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static ContentManager contentManager;
+
         // States
-        private static int currentStateID = StateID.INTRO;
-        private static State currentState = null;
-        private static Intro intro;
-        private static Splash splash;
-        private static Play play;
+        private static int currentStateID;
+        private static State currentState;
+
         // Audio
         private static Song music;
         private static Song introMusic;
-        private static Song playMusic;
+        private static Song playMusic1;
+        private static Song playMusic2;
+        private static Song playMusic3;
         private static bool songChanged;
 
         public GameManager()
@@ -39,9 +40,8 @@ namespace Dojo.Source
             Content.RootDirectory = "Content";
             contentManager = Content;
 
-            intro = new Intro();
-            splash = new Splash();
-            play = new Play();
+            currentState = null;
+            currentStateID = StateID.INTRO;
         }
 
         protected override void Initialize()
@@ -51,11 +51,6 @@ namespace Dojo.Source
             graphics.PreferredBackBufferHeight = Program.SCREEN_HEIGHT;
             graphics.IsFullScreen = true; // false = debug, true = release
             graphics.ApplyChanges();
-
-            // Initialise states
-            play.Init();
-            splash.Init();
-            intro.Init();
 
             SwitchState(currentStateID);
 
@@ -72,13 +67,10 @@ namespace Dojo.Source
 
             // Load music
             introMusic = Content.Load<Song>("Audio/Music/Intro");
-            playMusic = Content.Load<Song>("Audio/Music/Play");
+            playMusic1 = Content.Load<Song>("Audio/Music/Play1");
+            playMusic2 = Content.Load<Song>("Audio/Music/Play2");
+            playMusic3 = Content.Load<Song>("Audio/Music/Play3");
             music = introMusic;
-
-            // Load state content
-            splash.Load();
-            play.Load();
-            intro.Load();
         }
 
         protected override void UnloadContent()
@@ -89,13 +81,8 @@ namespace Dojo.Source
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) ||
-                (Keyboard.GetState().IsKeyDown(Keys.Escape)))
-            {
-                UnloadContent();
-                this.Exit();
-            }
-            if ((GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed))
+            if ((Keyboard.GetState().IsKeyDown(Keys.Escape)) ||
+                (currentState.exit))
             {
                 UnloadContent();
                 this.Exit();
@@ -111,6 +98,7 @@ namespace Dojo.Source
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
+
             if (songChanged)
             {
                 MediaPlayer.Stop();
@@ -123,8 +111,10 @@ namespace Dojo.Source
                 
                 System.Console.WriteLine(music);
             }
+
             currentState.Draw();
-            GameManager.spriteBatch.DrawString(Formats.arialTiny, Program.BUILD, new Vector2(Program.SCREEN_WIDTH - 90, Program.SCREEN_HEIGHT - 20), Color.DarkGray);
+            GameManager.spriteBatch.DrawString(Formats.arialTiny, Program.BUILD, new Vector2(Program.SCREEN_WIDTH - 100, Program.SCREEN_HEIGHT - 20), Color.DarkGray);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -132,6 +122,13 @@ namespace Dojo.Source
 
         public static void SwitchState(int newState)
         {
+            int args = 1;
+            
+            if (currentState != null)
+            {
+                args = currentState.args;
+            }
+
             // If the new ID is not the current ID, then update the value
             if (newState != currentStateID)
             {
@@ -144,19 +141,44 @@ namespace Dojo.Source
                 case StateID.INTRO:
                     music = introMusic;
                     songChanged = true;
-                    currentState = intro;
+                    currentState = new Intro();
                     break;
 
                 case StateID.SPLASH:
-                    currentState = splash;
+                    currentState = new Splash();
                     break;
 
                 case StateID.PLAY:
-                    music = playMusic;
+                    Random rand = new Random();
+
+                    int song = rand.Next(0, 3);
+
+                    switch(song)
+                    {
+                        case 0:  music = playMusic1; break;
+                        case 1:  music = playMusic2; break;
+                        case 2:  music = playMusic3; break;
+                    }
+
                     songChanged = true;
-                    currentState = play;
+                    currentState = new Play(args);
+                    break;
+
+                case StateID.MAIN_MENU:
+                    currentState = new Menu();
+                    break;
+
+                case StateID.CREDITS:
+                    currentState = new Credits();
+                    break;
+
+                case StateID.SELECT:
+                    currentState = new Select();
                     break;
             }
+
+            currentState.Init();
+            currentState.Load();
         }
     }
 }

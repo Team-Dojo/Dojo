@@ -10,11 +10,11 @@ namespace Dojo.Source
     /// </summary>
     static class StateID
     {
-        public const int SPLASH = 0;
-        public const int MAIN_MENU = 1;
-        public const int CHARACTER_SELECT = 2;
+        public const int INTRO = 0;
+        public const int SPLASH = 1;
+        public const int MAIN_MENU = 2;
         public const int PLAY = 3;
-        public const int STATS = 4;
-        public const int INTRO = 5;
+        public const int CREDITS = 4;
+        public const int SELECT = 5;
     }
 }

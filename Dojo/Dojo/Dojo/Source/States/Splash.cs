@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Dojo.Source.Framework.Display;
+using Dojo.Source.Display;
 using Dojo.Source.UI;
 using Dojo.Source.Resources;
 
@@ -13,7 +13,7 @@ namespace Dojo.Source.States
 {
     class Splash : State
     {
-        private Static screen;
+        private Sprite screen;
         private Sprite instruction;
         private int timer;
         private bool drawInstruction;
@@ -24,7 +24,7 @@ namespace Dojo.Source.States
         public Splash()
         {
             drawInstruction = true;
-            screen = new Static(false, (int)Sprite.Orientation.RIGHT);
+            screen = new Sprite((int)Sprite.Orientation.RIGHT);
             instruction = new Sprite((int)Sprite.Orientation.NONE);
             timer = 0;
         }
@@ -62,7 +62,7 @@ namespace Dojo.Source.States
             // Switch state
             if (Pressed(Buttons.A))
             {
-                GameManager.SwitchState(StateID.PLAY);
+                GameManager.SwitchState(StateID.MAIN_MENU);
             }
 
             timer++;
@@ -75,7 +75,7 @@ namespace Dojo.Source.States
             GameManager.spriteBatch.Draw(screen.texture, Vector2.Zero, Color.White);
             if (drawInstruction)
             {
-                GameManager.spriteBatch.Draw(instruction.texture, new Vector2(440, 615), Color.White);
+                GameManager.spriteBatch.Draw(instruction.texture, new Vector2(355, 410), Color.White);
             }
 
             base.Draw();

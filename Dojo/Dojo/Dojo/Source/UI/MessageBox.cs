@@ -15,22 +15,22 @@ namespace Dojo.Source.UI
         private Vector2 size;
         private Vector2 position;
 
-        public MessageBox(string _msg = "", SpriteFont _style = null)
+        public MessageBox(string msg = "", SpriteFont style = null)
         {
-            msg = _msg;
-            SetStyle(_style);
+            this.msg = msg;
+            SetStyle(style);
         }
 
-        public void SetStyle(SpriteFont _style)
+        public void SetStyle(SpriteFont style)
         {
-            style = _style;
+            this.style = style;
             size = new Vector2(style.MeasureString(msg).X, style.MeasureString(msg).Y);
             position = new Vector2((Program.SCREEN_WIDTH / 2) - (size.X / 2), (HUD.HEIGHT/2) + (Program.SCREEN_HEIGHT / 2) - (size.Y / 2));
         }
 
-        public void SetMessage(string _msg)
+        public void SetMessage(string msg)
         {
-            msg = _msg;
+            this.msg = msg;
         }
 
         public void Draw()

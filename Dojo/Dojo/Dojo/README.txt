@@ -1,19 +1,14 @@
 ﻿//--------------------------------------
 // Team Dojo
 //--------------------------------------
-PROGRAMMERS:
 Andrew 'Andy' Allan
 Greig Barker
 Mark Thompson
 
-ARTISTS:
+SPECIAL THANKS:
 Carl Packer
 Faye Williams
-
-AUDIO:
 Brett Murray
-
-SPECIAL THANKS:
 Duncan Gillespie
 Vimarsh 'Vimme' Raina
 Ellen Brown

@@ -8,7 +8,7 @@ namespace Dojo.Source
         // Properties
         public static int SCREEN_WIDTH  = 1280;
         public static int SCREEN_HEIGHT = 720;
-        public static string BUILD = "Alpha Build 7.0";
+        public static string BUILD = "Alpha Build 11.0";
 
         /// <summary>
         /// The main entry point for the application.
